@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>H2S // PROCEDURE</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
+    <style>
+        :root {
+            --neon-green: #00ff41; --neon-pink: #ff0055; --neon-blue: #00e5ff;
+            --dark-bg: #050505;
+        }
+        body {
+            background-color: var(--dark-bg); color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace; margin: 0;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.05) 0%, transparent 60%);
+        }
+        header {
+            height: 45px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; border-bottom: 1px solid var(--neon-blue); background: #000;
+        }
+        .brand { font-size: 1.2em; color: var(--neon-blue); letter-spacing: 2px; font-weight: bold;}
+        nav button {
+            background: transparent; border: 1px solid #333; color: #666; padding: 4px 12px;
+            cursor: pointer; font-family: inherit; margin-left: 5px; font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        nav button:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+        
+        /* Style spécifique page aide */
+        .content { padding: 40px; max-width: 800px; margin: 0 auto; color: #ddd; }
+        h1 { color: var(--neon-pink); border-bottom: 1px solid #333; padding-bottom: 10px; }
+        h2 { color: var(--neon-blue); margin-top: 35px; border-left: 3px solid var(--neon-blue); padding-left: 10px; }
+        p { line-height: 1.6; margin-bottom: 10px; }
+        strong { color: var(--neon-green); }
+        .warning { color: #ffcc00; font-size: 0.9em; border: 1px dashed #ffcc00; padding: 10px; display: inline-block; margin-top: 5px;}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">/// H2S CONTROL</div>
+        <nav>
+            <a href="/"><button>RETOUR SUPERVISION</button></a>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>PROTOCOLE D'IMPRESSION</h1>
+        
+        <h2>1. Connexion Réseau</h2>
+        <p>Si vous n'avez pas de connexion active, connectez-vous impérativement au Wi-Fi suivant :</p>
+        <p>> SSID : <strong>Numerilab</strong><br>
+           > PASSWORD : <strong>numerilab</strong></p>
+
+        <h2>2. Transfert du Fichier</h2>
+        <p>Rendez-vous dans la section <strong>Dépôt Fichier</strong> de ce site web.</p>
+        <p>Déposez votre fichier au format <strong>.STL</strong> dans la zone prévue à cet effet.</p>
+
+        <h2>3. Récupération (Sur PC Imprimante)</h2>
+        <p>Allez physiquement sur le PC qui contrôle les imprimantes.</p>
+        <p>1. Cliquez sur la <strong>barre des menus</strong> (en haut à gauche).<br>
+           2. Cliquez sur l'icône <strong>Dossier</strong> située dans la barre latérale de droite.</p>
+        <p>Vous devriez voir apparaître le fichier que vous venez d'uploader depuis le site.</p>
+
+        <h2>4. Tranchage (Slicing)</h2>
+        <p>Glissez-déposez (drag & drop) votre fichier dans le logiciel correspondant à la machine souhaitée :</p>
+        <p>* <strong>Cura</strong> (pour Ultimaker)<br>
+           * <strong>Bambu Studio</strong> (pour Bambu Lab)</p>
+        <p>Cliquez sur le bouton <strong>Trancher</strong> (ou "Slice").</p>
+
+        <h2>5. Envoi à l'impression</h2>
+        <p>Une fois le calcul terminé, cliquez sur <strong>Envoyer vers l'imprimante</strong>.</p>
+        <div class="warning">
+            ATTENTION CURA : Une fenêtre apparaîtra pour vous demander de choisir l'imprimante cible. Sélectionnez la bonne machine avant de valider.
+        </div>
+    </div>
+</body>
+</html>
