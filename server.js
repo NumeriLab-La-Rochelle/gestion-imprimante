@@ -10,11 +10,11 @@ const mqtt = require('mqtt');
 // >>> CONFIGURATION GENERALE <<<
 // ==========================================
 
-const VIDEO_BASE_URL = 'https://numerilab-cam.duckdns.org'; 
+const VIDEO_BASE_URL = 'https://numerilab-cam.cesilarochelle.fr'; 
 
 // 1. BAMBU LAB
 const BAMBU_CONFIG = {
-    ip: '10.0.50.101',
+    ip: '10.0.0.1',
     accessCode: '6f744d5e',
     serial: '0938BC580601730'
 };
