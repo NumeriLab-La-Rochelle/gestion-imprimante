@@ -15,7 +15,7 @@ const VIDEO_BASE_URL = 'https://numerilab-cam.cesilarochelle.fr';
 // 1. BAMBU LAB
 const BAMBU_CONFIG = {
     ip: '10.0.0.1',
-    accessCode: '6f744d5e',
+    accessCode: '7c549800',
     serial: '0938BC580601730'
 };
 
