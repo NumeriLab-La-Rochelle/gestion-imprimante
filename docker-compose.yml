@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: gestion_imprimante_web
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:3000"
+    depends_on:
+      - go2rtc
+
+  # 2. Le service de streaming vidéo
+  go2rtc:
+    container_name: gestion_imprimante_go2rtc
+    image: alexxit/go2rtc:latest
+    restart: unless-stopped
+    volumes:
+      - ./go2rtc.yaml:/config/go2rtc.yaml
+    ports:
+      - "1984:1984"
+      - "8554:8554"
+      - "8555:8555"

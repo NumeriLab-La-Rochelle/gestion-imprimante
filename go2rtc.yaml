@@ -1,6 +1,6 @@
 streams:
   # BAMBU LAB : Les guillemets sont OBLIGATOIRES à cause des symboles #
-  bambu_h2s: "ffmpeg:rtsps://bblp:6f744d5e@10.0.50.101:322/streaming/live/1
+  bambu_h2s: "ffmpeg:rtsps://bblp:6f744d5e@10.0.50.101:322/streaming/live/1"
 "
   glaucus: http://10.0.50.104/webcam/?action=stream
   berghia: http://10.0.50.105/webcam/?action=stream
