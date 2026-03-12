@@ -5,6 +5,38 @@ const io = require('socket.io')(http);
 const multer = require('multer');
 const axios = require('axios');
 const mqtt = require('mqtt');
+const ftp = require('basic-ftp');
+
+// ==========================================
+// >>> CONFIGURATION FTP <<<
+// ==========================================
+
+const FTP_CONFIG = {
+    host: '10.0.50.55',
+    user: 'gestion-impression',      // à modifier si nécessaire
+    password: 'numerilab',           // à modifier si nécessaire
+    remotePath: ''  // chemin cible sur le serveur FTP
+};
+
+async function uploadToFTP(localPath, filename) {
+    const client = new ftp.Client();
+    try {
+        await client.access({
+            host: FTP_CONFIG.host,
+            user: FTP_CONFIG.user,
+            password: FTP_CONFIG.password
+        });
+        if (FTP_CONFIG.remotePath) await client.ensureDir(FTP_CONFIG.remotePath);
+        const dest = FTP_CONFIG.remotePath ? `${FTP_CONFIG.remotePath}/${filename}` : filename;
+        await client.uploadFrom(localPath, dest);
+        console.log(`>>> [FTP] Fichier envoyé : ${filename}`);
+    } catch (err) {
+        console.error('>>> [FTP] Erreur upload :', err.message);
+        throw err;
+    } finally {
+        client.close();
+    }
+}
 
 // ==========================================
 // >>> CONFIGURATION GENERALE <<<
@@ -85,7 +117,7 @@ async function getUltimakerToken() {
 
 const upload = multer({ 
     storage: multer.diskStorage({
-        destination: (req, file, cb) => cb(null, '/srv/stl-farm'),
+        destination: (req, file, cb) => cb(null, '/tmp'),
         filename: (req, file, cb) => {
             const p = (req.body.firstname||'').trim(), n = (req.body.lastname||'').trim();
             cb(null, `${p}.${n}_${file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
@@ -96,7 +128,14 @@ const upload = multer({
 app.use(express.static('public')); 
 app.use('/aide', express.static('public/aide'));
 app.use(express.json());
-app.post('/upload', upload.single('file'), (req, res) => res.send({status:'success', filename:req.file.filename}));
+app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        await uploadToFTP(req.file.path, req.file.filename);
+        res.send({ status: 'success', filename: req.file.filename });
+    } catch (err) {
+        res.status(500).send({ status: 'error', message: 'Erreur upload FTP : ' + err.message });
+    }
+});
 
 // --- MQTT BAMBU ---
 let bambuClient = null;
