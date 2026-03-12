@@ -1,0 +1,28 @@
+name: Deploy to Proxmox Local
+
+on:
+  push:
+    branches:
+      - production # Déclenche l'action uniquement sur la branche production
+
+jobs:
+  deploy:
+    # C'EST LA LIGNE MAGIQUE : Elle dit à GitHub d'utiliser VOTRE conteneur
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        # Cette action télécharge le dernier code de la branche production sur votre conteneur
+        uses: actions/checkout@v4
+
+      - name: Deploy with Docker Compose
+        # Ces commandes s'exécutent directement sur votre conteneur Proxmox
+        run: |
+          # 1. On coupe les anciens conteneurs (optionnel mais plus propre)
+          docker compose down
+          
+          # 2. On reconstruit et on relance avec le nouveau code
+          docker compose up -d --build
+          
+          # 3. On nettoie les anciennes images Docker pour libérer de l'espace disque
+          docker image prune -f
