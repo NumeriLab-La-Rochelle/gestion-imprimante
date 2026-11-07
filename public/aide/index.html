@@ -1,271 +1,118 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>H2S // PROCEDURE</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
-    <style>
-        :root {
-            --neon-green: #00ff41; --neon-pink: #ff0055; --neon-blue: #00e5ff;
-            --dark-bg: #050505;
-        }
-        body {
-            background-color: var(--dark-bg); color: var(--neon-green);
-            font-family: 'Share Tech Mono', monospace; margin: 0;
-            background-image: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.05) 0%, transparent 60%);
-        }
-        header {
-            height: 45px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 15px; border-bottom: 1px solid var(--neon-blue); background: #000;
-        }
-        .brand { font-size: 1.2em; color: var(--neon-blue); letter-spacing: 2px; font-weight: bold;}
-        nav button {
-            background: transparent; border: 1px solid #333; color: #666; padding: 4px 12px;
-            cursor: pointer; font-family: inherit; margin-left: 5px; font-size: 0.9em;
-            transition: all 0.3s;
-        }
-        nav button:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
-        
-        /* Style spécifique page aide */
-        .content { padding: 40px; max-width: 800px; margin: 0 auto; color: #ddd; }
-        h1 { color: var(--neon-pink); border-bottom: 1px solid #333; padding-bottom: 10px; }
-        h2 { color: var(--neon-blue); margin-top: 35px; border-left: 3px solid var(--neon-blue); padding-left: 10px; }
-        p { line-height: 1.6; margin-bottom: 10px; }
-        strong { color: var(--neon-green); }
-        .warning { color: #ffcc00; font-size: 0.9em; border: 1px dashed #ffcc00; padding: 10px; display: inline-block; margin-top: 5px;}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aide — Gestion des imprimantes 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090b;
+      --panel: #11171b;
+      --line: rgba(255,255,255,.1);
+      --green: #00ff41;
+      --pink: #ff0055;
+      --blue: #00e5ff;
+      --yellow: #fcee0a;
+      --text: #e5eef2;
+      --muted: #9ba9b0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 0, rgba(0,229,255,.08), transparent 42%), var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+    }
+    header {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 18px;
+      background: #030405;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { color: var(--blue); font-weight: bold; letter-spacing: 2px; }
+    header a {
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 7px 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    header a:hover { color: var(--green); border-color: var(--green); }
+    main { max-width: 900px; margin: auto; padding: 28px 18px 56px; }
+    h1 { color: var(--pink); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+    .intro, .step, .notice { background: rgba(17,23,27,.88); border: 1px solid var(--line); padding: 16px 18px; margin: 14px 0; }
+    h2 { color: var(--blue); font-size: 1.15rem; margin: 0 0 10px; }
+    p, li { line-height: 1.65; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--green); }
+    .notice { border-left: 3px solid var(--yellow); color: var(--yellow); }
+    .docs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .docs a { color: var(--blue); border: 1px solid rgba(0,229,255,.3); padding: 8px 12px; text-decoration: none; }
+    .docs a:hover { background: rgba(0,229,255,.08); }
+    @media (max-width: 540px) {
+      header { align-items: flex-start; flex-direction: column; }
+      main { padding: 20px 12px 40px; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="brand">/// H2S CONTROL</div>
-        <nav>
-            <a href="/"><button>RETOUR SUPERVISION</button></a>
-        </nav>
-    </header>
+  <header>
+    <div class="brand">/// H2S CONTROL — AIDE</div>
+    <a href="/">Retour à la supervision</a>
+  </header>
 
-    <div class="content">
-        <h1>PROTOCOLE D'IMPRESSION</h1>
-        
-        <h2>1. Connexion Réseau</h2>
-        <p>Si vous n'avez pas de connexion active, connectez-vous impérativement au Wi-Fi suivant :</p>
-        <p>> SSID : <strong>Numerilab</strong><br>
-           > PASSWORD : <strong>numerilab</strong></p>
-
-        <h2>2. Transfert du Fichier</h2>
-        <p>Rendez-vous dans la section <strong>Dépôt Fichier</strong> de ce site web.</p>
-        <p>Déposez votre fichier au format <strong>.STL</strong> dans la zone prévue à cet effet.</p>
-
-        <h2>3. Récupération (Sur PC Imprimante)</h2>
-        <p>Allez physiquement sur le PC qui contrôle les imprimantes.</p>
-        <p>1. Cliquez sur la <strong>barre des menus</strong> (en haut à gauche).<br>
-           2. Cliquez sur l'icône <strong>Dossier</strong> située dans la barre latérale de droite.</p>
-        <p>Vous devriez voir apparaître le fichier que vous venez d'uploader depuis le site.</p>
-
-        <h2>4. Tranchage (Slicing)</h2>
-        <p>Glissez-déposez (drag & drop) votre fichier dans le logiciel correspondant à la machine souhaitée :</p>
-        <p>* <strong>Cura</strong> (pour Ultimaker)<br>
-           * <strong>Bambu Studio</strong> (pour Bambu Lab)</p>
-        <p>Cliquez sur le bouton <strong>Trancher</strong> (ou "Slice").</p>
-
-        <h2>5. Envoi à l'impression</h2>
-        <p>Une fois le calcul terminé, cliquez sur <strong>Envoyer vers l'imprimante</strong>.</p>
-        <div class="warning">
-            ATTENTION CURA : Une fenêtre apparaîtra pour vous demander de choisir l'imprimante cible. Sélectionnez la bonne machine avant de valider.
-        </div>
+  <main>
+    <h1>Guide de dépôt et d'impression</h1>
+    <div class="intro">
+      <p>Cette page explique comment déposer un modèle et le préparer pour l’impression. Le site sert à transmettre le fichier et à superviser les machines; le tranchage et le démarrage du travail se font dans le logiciel de la machine.</p>
     </div>
-    <script>
-        const socket = io();
-        const supervisionGrid = document.getElementById('supervision-grid');
-        let pendingFile = null;
-        let printerDataCache = {}; // Pour stocker les données et ouvrir le FS
 
-        function switchTab(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            if(id === 'depot') document.getElementById('depot').style.display = 'flex';
-            else document.getElementById('depot').style.display = 'none';
-            if(id !== 'depot') document.getElementById(id).classList.add('active-section');
-            document.getElementById('btn-'+id).classList.add('active');
-        }
+    <section class="step">
+      <h2>1. Accéder au réseau du laboratoire</h2>
+      <p>Connectez-vous au réseau Wi-Fi du laboratoire indiqué par votre responsable. Pour des raisons de sécurité, les identifiants réseau ne sont pas publiés sur cette page.</p>
+    </section>
 
-        // --- GESTION PLEIN ECRAN ---
-        function openFullscreen(id) {
-            const data = printerDataCache[id];
-            if (!data || !data.camUrl) return;
-            
-            const overlay = document.getElementById('fs-overlay');
-            const container = document.getElementById('fs-content');
-            container.innerHTML = ''; // Clean
+    <section class="step">
+      <h2>2. Déposer un fichier STL</h2>
+      <p>Dans le site, ouvrez <strong>Dépôt fichiers</strong>. Glissez votre fichier dans la zone de dépôt ou cliquez sur cette zone pour le sélectionner. Indiquez votre prénom et votre nom, puis validez l’envoi.</p>
+      <p>Attendez la confirmation avant de quitter la page. En cas d’erreur, réessayez une fois et contactez le responsable si le problème persiste.</p>
+    </section>
 
-            if (data.camUrl.includes('.html')) {
-                // Bambu (Iframe)
-                container.innerHTML = `<iframe src="${data.camUrl}" class="fs-iframe"></iframe>`;
-            } else {
-                if(data.type === 'octo') {
-                    // Ultimaker (Rotated)
-                    container.innerHTML = `<img src="${data.camUrl}" class="fs-rotated">`;
-                } else {
-                    // Standard
-                    container.innerHTML = `<img src="${data.camUrl}" class="fs-img">`;
-                }
-            }
-            overlay.style.display = 'flex';
-        }
+    <section class="step">
+      <h2>3. Récupérer le fichier</h2>
+      <p>Sur le poste de contrôle des imprimantes, ouvrez l’emplacement de dépôt indiqué par le responsable du laboratoire et recherchez le fichier envoyé. Le nom du fichier peut inclure votre prénom et votre nom.</p>
+    </section>
 
-        function closeFullscreen() {
-            document.getElementById('fs-overlay').style.display = 'none';
-            document.getElementById('fs-content').innerHTML = ''; // Stop stream/iframe
-        }
+    <section class="step">
+      <h2>4. Préparer le modèle</h2>
+      <p>Ouvrez le fichier dans le logiciel correspondant à l’imprimante choisie :</p>
+      <ul>
+        <li><strong>Cura</strong> pour les imprimantes Ultimaker;</li>
+        <li><strong>Bambu Studio</strong> pour l’imprimante Bambu Lab.</li>
+      </ul>
+      <p>Vérifiez l’orientation, le matériau, les supports et les paramètres d’impression, puis lancez le tranchage (« Slice »).</p>
+    </section>
 
-        function createOrUpdateCard(data) {
-            // Mise en cache pour le bouton FS
-            printerDataCache[data.id] = data;
+    <section class="step">
+      <h2>5. Envoyer et surveiller l’impression</h2>
+      <p>Vérifiez soigneusement la machine sélectionnée avant d’envoyer le travail. La page <strong>Supervision</strong> affiche, selon les informations fournies par la machine, son état, la progression, les températures, la caméra et l’estimation de fin.</p>
+      <p>Les boutons de pause/reprise agissent sur l’imprimante. Utilisez-les uniquement si vous êtes autorisé et vérifiez l’état affiché après l’action.</p>
+    </section>
 
-            let card = document.getElementById(`printer-${data.id}`);
-            if (!card) {
-                card = document.createElement('div');
-                card.className = 'printer-card';
-                card.id = `printer-${data.id}`;
-                
-                let camContent = '<div class="no-cam">[NO SIGNAL]</div>';
-                
-                // Logique d'affichage Petite Vue
-                if (data.type === 'connect') {
-                    camContent = '<div class="no-cam">[NO CAM]</div>';
-                } else if (data.camUrl) {
-                    if (data.camUrl.includes('.html')) {
-                        camContent = `<iframe src="${data.camUrl}" class="zoomed-iframe"></iframe>`;
-                    } else {
-                        if(data.type === 'octo') {
-                            camContent = `<img src="${data.camUrl}" class="rotated-cam">`;
-                        } else {
-                            camContent = `<img src="${data.camUrl}">`;
-                        }
-                    }
-                }
+    <div class="notice">Attention : ne déposez pas de fichiers confidentiels ou de modèles que vous n’êtes pas autorisé à partager. Les fichiers peuvent être conservés sur le serveur du laboratoire.</div>
 
-                // AFFICHAGE FILAMENT
-                let spoolDisplay = '';
-                if (data.type === 'bambu') {
-                    spoolDisplay = `<div style="display:flex; align-items:center; font-size:0.8em">${data.pla}</div>`;
-                } else {
-                    spoolDisplay = `PLA: <input type="number" class="pla-input" value="${data.pla}" onchange="updatePla('${data.id}', this.value)"> g`;
-                }
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <span style="font-weight:bold">${data.name}</span>
-                        <span class="status-txt" style="font-size:0.8em; color:var(--neon-blue)">${data.status}</span>
-                    </div>
-                    
-                    <div class="cam-zone">
-                        ${camContent}
-                        ${data.camUrl ? `<button class="btn-fullscreen" onclick="openFullscreen('${data.id}')">⤢</button>` : ''}
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="filename">--</span>
-                        <span class="end-time" style="color:#aaa">--:--</span>
-                    </div>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
-                    <div class="info-row">
-                        <span>Buse: <span class="temp-nozzle" style="color:var(--neon-pink)">0</span>°C</span>
-                        <span>Lit: <span class="temp-bed" style="color:var(--neon-pink)">0</span>°C</span>
-                    </div>
-                    <div class="controls">
-                        <div style="font-size:0.8em">${spoolDisplay}</div>
-                        <button class="btn-pause" onclick="togglePause('${data.id}')">PAUSE</button>
-                    </div>
-                `;
-                supervisionGrid.appendChild(card);
-            }
-
-            // Updates
-            card.setAttribute('data-status', data.status);
-            card.querySelector('.status-txt').innerText = data.status;
-            card.querySelector('.filename').innerText = data.filename || "";
-            card.querySelector('.end-time').innerText = "Fin: " + data.endTime;
-            card.querySelector('.progress-bar').style.width = data.progress + '%';
-            card.querySelector('.temp-nozzle').innerText = data.tempNozzle;
-            card.querySelector('.temp-bed').innerText = data.tempBed;
-
-            // Caméra Update
-            let camZone = card.querySelector('.cam-zone');
-            // On vérifie si le bouton FS existe, sinon on le rajoute
-            if(data.camUrl && !camZone.querySelector('.btn-fullscreen')) {
-                let btn = document.createElement('button');
-                btn.className = 'btn-fullscreen';
-                btn.innerText = '⤢';
-                btn.onclick = () => openFullscreen(data.id);
-                camZone.appendChild(btn);
-            }
-
-            if (data.camUrl) {
-                if (data.camUrl.includes('.html')) {
-                    let iframe = camZone.querySelector('iframe');
-                    if(!iframe || iframe.src !== data.camUrl) {
-                        // On nettoie pour éviter les doublons
-                        let oldImg = camZone.querySelector('img'); if(oldImg) oldImg.remove();
-                        // On crée ou met à jour l'iframe
-                        if(!iframe) {
-                            let newIframe = document.createElement('iframe');
-                            newIframe.src = data.camUrl;
-                            newIframe.className = "zoomed-iframe";
-                            camZone.insertBefore(newIframe, camZone.firstChild); // Insérer AVANT le bouton
-                        }
-                    }
-                } else {
-                    let img = camZone.querySelector('img');
-                    if(!img) {
-                        let oldIframe = camZone.querySelector('iframe'); if(oldIframe) oldIframe.remove();
-                        let newImg = document.createElement('img');
-                        newImg.src = data.camUrl;
-                        if(data.type === 'octo') newImg.className = "rotated-cam";
-                        camZone.insertBefore(newImg, camZone.firstChild);
-                    }
-                }
-            }
-
-            // Saisie PLA
-            if (data.type !== 'bambu') {
-                let plaInput = card.querySelector('.pla-input');
-                if (plaInput && document.activeElement !== plaInput) {
-                    plaInput.value = data.pla;
-                }
-            } else {
-                let spoolDiv = card.querySelector('.controls div');
-                if(spoolDiv) spoolDiv.innerHTML = data.pla; 
-            }
-
-            let btnPause = card.querySelector('.btn-pause');
-            let s = data.status.toLowerCase();
-            if(s.includes('paused') || s.includes('pausing')) {
-                btnPause.style.background = 'var(--neon-yellow)'; btnPause.style.color = 'black'; btnPause.innerText = "▶ RESUME";
-            } else {
-                btnPause.style.background = 'transparent'; btnPause.style.color = 'var(--neon-yellow)'; btnPause.innerText = "⏸ PAUSE";
-            }
-        }
-
-        socket.on('printer_update', (data) => createOrUpdateCard(data));
-        window.updatePla = (id, val) => socket.emit('set_pla', {id, value: val});
-        window.togglePause = (id) => socket.emit('toggle_pause', {id});
-        function handleFiles(files) { if(files.length > 0) { pendingFile = files[0]; modal.style.display = 'flex'; document.getElementById('user-firstname').focus(); }}
-        
-        const dropArea = document.getElementById('drop-area');
-        const modal = document.getElementById('upload-modal');
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => dropArea.addEventListener(e, (ev) => { ev.preventDefault(); ev.stopPropagation(); }));
-        dropArea.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
-        function closeModal() { modal.style.display = 'none'; pendingFile = null; }
-        function confirmUpload() {
-            const fname = document.getElementById('user-firstname').value;
-            const lname = document.getElementById('user-lastname').value;
-            if(!fname || !lname || !pendingFile) return;
-            let formData = new FormData();
-            formData.append('firstname', fname); formData.append('lastname', lname); formData.append('file', pendingFile);
-            fetch('/upload', { method: 'POST', body: formData })
-            .then(r => r.json()).then(d => { alert("Fichier envoyé : " + d.filename); closeModal(); switchTab('supervision'); })
-            .catch(e => alert("Erreur upload"));
-        }
-    </script>
+    <div class="docs">
+      <a href="/">Ouvrir la supervision</a>
+      <a href="https://github.com/NumeriLab-La-Rochelle/gestion-imprimante/blob/main/docs/EXPLOITATION.md">Aide dépannage</a>
+    </div>
+  </main>
 </body>
 </html>
