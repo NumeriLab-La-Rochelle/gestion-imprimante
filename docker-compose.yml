@@ -3,12 +3,36 @@ services:
     container_name: gestion_imprimante_web
     build: .
     restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      UPLOAD_DIR: /srv/stl-farm
+      VIDEO_BASE_URL: ${VIDEO_BASE_URL:-https://numerilab-cam.cesilarochelle.fr}
+      FTP_HOST: ${FTP_HOST:-10.0.50.55}
+      FTP_USER: ${FTP_USER:-gestion-impression}
+      FTP_PASSWORD: ${FTP_PASSWORD:-}
+      FTP_REMOTE_PATH: ${FTP_REMOTE_PATH:-}
+      BAMBU_IP: ${BAMBU_IP:-10.0.0.1}
+      BAMBU_ACCESS_CODE: ${BAMBU_ACCESS_CODE:-}
+      BAMBU_SERIAL: ${BAMBU_SERIAL:-}
+      ULTIMAKER_CLIENT_ID: ${ULTIMAKER_CLIENT_ID:-}
+      ULTIMAKER_CLIENT_SECRET: ${ULTIMAKER_CLIENT_SECRET:-}
+      ULTIMAKER_TOKEN_URL: ${ULTIMAKER_TOKEN_URL:-https://account.ultimaker.com/sso/oauth2/token}
+      ULTIMAKER_SCOPES: ${ULTIMAKER_SCOPES:-connect.cluster.read connect.cluster.write cura.printjob.read cura.printjob.write}
+      PRINTER_MELIBE_NAME: ${PRINTER_MELIBE_NAME:-Ultimaker-2C-Melibe}
+      PRINTER_DIRONA_NAME: ${PRINTER_DIRONA_NAME:-Ultimaker-2C-Dirona}
+      ARMINA_IP: ${ARMINA_IP:-10.0.50.106}
+      ARMINA_KEY: ${ARMINA_KEY:-}
+      GLAUCUS_IP: ${GLAUCUS_IP:-10.0.50.104}
+      GLAUCUS_KEY: ${GLAUCUS_KEY:-}
+      BERGHIA_IP: ${BERGHIA_IP:-10.0.50.105}
+      BERGHIA_KEY: ${BERGHIA_KEY:-}
+    volumes:
+      - ./stl-farm:/srv/stl-farm
     ports:
       - "8080:3000"
     depends_on:
       - go2rtc
 
-  # 2. Le service de streaming vidéo
   go2rtc:
     container_name: gestion_imprimante_go2rtc
     image: alexxit/go2rtc:latest

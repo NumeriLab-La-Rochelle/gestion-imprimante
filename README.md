@@ -1,8 +1,6 @@
 # Gestion des imprimantes 3D
 
-Application web interne de supervision d’un parc d’imprimantes 3D. L’interface affiche l’état des machines, les caméras, la progression et les températures, permet de mettre en pause/reprendre certains travaux, de modifier les estimations de filament et de déposer des fichiers STL.
-
-> Cette documentation est rédigée à partir des fichiers de version finale transmis dans la conversation. Les identifiants, mots de passe, clés API et codes d’accès ne sont volontairement pas recopiés ici. Ils sont actuellement présents en clair dans certains fichiers de configuration transmis : voir [Sécurité](docs/SECURITE.md).
+Application web interne de supervision d’un parc d’imprimantes 3D. L’interface affiche l’état des machines, les caméras, la progression, les températures et les états de pause. Elle permet aussi de déposer des fichiers STL et de les déplacer vers le bureau de travail dédié.
 
 ## Documentation
 
@@ -12,56 +10,89 @@ Application web interne de supervision d’un parc d’imprimantes 3D. L’inter
 - [API HTTP et événements Socket.IO](docs/API.md)
 - [Exploitation et dépannage](docs/EXPLOITATION.md)
 - [Sécurité et limites connues](docs/SECURITE.md)
-- [Guide utilisateur](public/aide/index.html) — accessible depuis le bouton **Aide** de l’application
+- [Guide utilisateur](public/aide/index.html)
 
-## Démarrage rapide avec Docker Compose
+## Démarrage rapide
 
-Depuis la racine du dépôt, après avoir vérifié la configuration réseau et les secrets :
+1. Copier le fichier `.env.example` en `.env` et renseigner les variables nécessaires.
+2. Créer le dossier local `./stl-farm` pour le dépôt de fichiers.
+3. Lancer le projet :
 
 ```bash
 docker compose up -d --build
-docker compose logs -f web
 ```
 
-L’interface web est publiée sur le port **8080** de l’hôte selon le `docker-compose.yml` fourni. go2rtc est lancé séparément pour les flux vidéo. L’application Node écoute sur le port **3000** dans son conteneur.
+4. Vérifier la page d’accueil sur `http://localhost:8080/`.
 
-**À vérifier avant le premier démarrage :** le serveur reçoit les fichiers dans `/srv/stl-farm`. Le Dockerfile et le Compose fournis ne créent pas ce répertoire ni ne le montent sur un volume. Il faut donc corriger le déploiement pour créer et persister ce dossier avant d’utiliser le dépôt de fichiers; les détails et un exemple sont dans [Installation](docs/INSTALLATION.md).
+## Variables d’environnement
 
-## Technologies
+Le projet est maintenant préparé pour utiliser des variables d’environnement plutôt que des secrets codés en dur dans `server.js`.
 
-- Node.js 20 et Express
-- Socket.IO pour les mises à jour temps réel et les commandes de l’interface
-- MQTT pour la Bambu Lab
-- API OctoPrint pour les imprimantes locales
-- API Ultimaker Connect pour les machines cloud
-- Multer pour recevoir les fichiers
-- go2rtc et FFmpeg pour les flux vidéo
+Exemple de fichier `.env` :
+
+```env
+VIDEO_BASE_URL=https://numerilab-cam.cesilarochelle.fr
+FTP_HOST=10.0.50.55
+FTP_USER=gestion-impression
+FTP_PASSWORD=xxxxxxxx
+FTP_REMOTE_PATH=
+
+BAMBU_IP=10.0.0.1
+BAMBU_ACCESS_CODE=xxxxx
+BAMBU_SERIAL=xxxxx
+
+ULTIMAKER_CLIENT_ID=xxxxx
+ULTIMAKER_CLIENT_SECRET=xxxxx
+
+ARMINA_KEY=xxxxx
+GLAUCUS_KEY=xxxxx
+BERGHIA_KEY=xxxxx
+```
+
+Les valeurs exactes doivent être renseignées dans votre environnement local ou votre orchestrateur. Ne jamais committer un `.env` réel.
 
 ## Structure du dépôt
 
 ```text
 .
-├── server.js                 # Serveur HTTP, intégrations imprimantes et upload
-├── package.json              # Dépendances Node.js
-├── Dockerfile                # Image du serveur web
-├── docker-compose.yml        # Services web et go2rtc
-├── go2rtc.yaml               # Sources des flux caméra
+├── server.js
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+├── go2rtc.yaml
 ├── public/
-│   ├── index.html            # Supervision et dépôt de fichiers
-│   └── aide/index.html       # Guide utilisateur servi par l’application
-└── docs/                     # Documentation technique
+│   ├── index.html
+│   └── aide/index.html
+├── docs/
+│   ├── INSTALLATION.md
+│   ├── ARCHITECTURE.md
+│   ├── CONFIGURATION.md
+│   ├── API.md
+│   ├── EXPLOITATION.md
+│   ├── SECURITE.md
+│   └── README.md
+└── stl-farm/  # créé localement, pas versionné
 ```
 
 ## Fonctionnalités
 
-- Cartes de supervision pour Ultimaker Connect, OctoPrint et Bambu Lab.
-- État, fichier en cours, progression, températures et heure de fin estimée lorsque la source les fournit.
-- Flux vidéo accessibles depuis les cartes et en plein écran.
-- Actions pause/reprise et saisie de la quantité de PLA restante.
-- Dépôt d’un fichier avec identification par prénom et nom.
+- Supervision temps réel d’un parc d’imprimantes
+- Intégration Ultimaker Connect, OctoPrint et Bambu Lab
+- Flux caméra via go2rtc
+- Upload de fichiers STL + dépôt local
+- Pause/reprise depuis l’interface
+- Visualisation des températures et de la progression
 
-Les informations affichées dépendent de la disponibilité des imprimantes, des services distants et du réseau du laboratoire. Le dépôt de fichiers n’est pas un système de tranchage : le fichier doit ensuite être récupéré sur le poste de contrôle et préparé dans Cura ou Bambu Studio.
+## Sécurité
 
-## Tests
+- Les secrets ne doivent plus être en dur dans le code.
+- L’upload est écrit dans un dossier dédié et localisé.
+- Le fichier `.env` est exclu du dépôt (`.gitignore`).
+- Les ports exposés doivent rester limités au réseau de confiance du laboratoire.
 
-Le `package.json` fourni ne définit pas de suite de tests automatisés : sa commande `npm test` est un placeholder qui échoue volontairement. Valider le déploiement sur un environnement de test et vérifier les flux avant toute utilisation réelle. Voir [Exploitation et dépannage](docs/EXPLOITATION.md).
+## Déploiement
+
+Le `docker-compose.yml` monte désormais le dossier `./stl-farm` dans le conteneur afin de garantir une persistance minimale des fichiers uploadés.
+
+Le `Dockerfile` prévoit aussi la création du dossier `/srv/stl-farm` au démarrage.
